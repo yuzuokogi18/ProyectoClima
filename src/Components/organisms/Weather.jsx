@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import SearchForm from '../molecules/SearchForm';
@@ -94,21 +93,16 @@ const Weather = () => {
   };
 
   const getWeatherData = async (city) => {
-    const apiKey = '79ccffed511d96caf319a046e96b08f0'; 
+    const apiKey = '79ccffed511d96caf319a046e96b08f0';
     try {
-      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
-        params: {
-          q: city,
-          units: 'metric',
-          lang: 'es',
-          appid: apiKey
-        }
-      });
-      if (response.data) {
-        const { temp } = response.data.main;
-        const description = response.data.weather[0].description;
-        return { temperature: temp, description };
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=es&appid=${apiKey}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+      const data = await response.json();
+      const { temp } = data.main;
+      const description = data.weather[0].description;
+      return { temperature: temp, description };
     } catch (error) {
       console.error('Error fetching weather data:', error);
       Swal.fire({

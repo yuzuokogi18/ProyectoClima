@@ -46,6 +46,17 @@ const ViewFavoritesButton = styled.button`
 `;
 
 const FavoritesList = ({ cities, onRemove, onAddToFavorites, onViewFavorites, showFavoritesList }) => {
+  const handleRemove = (city) => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Búsqueda eliminada',
+      text: `${city} ha sido eliminada de la lista de búsqueda.`,
+      showConfirmButton: false,
+      timer: 1500
+    });
+    onRemove(city);
+  };
+
   return (
     <div>
       <List>
@@ -54,7 +65,7 @@ const FavoritesList = ({ cities, onRemove, onAddToFavorites, onViewFavorites, sh
             <span>{city}</span>
             <ButtonContainer>
               <AddToFavoritesButton onClick={() => onAddToFavorites(city)}>Agregar a favoritos</AddToFavoritesButton>
-              <RemoveButton onClick={() => onRemove(city)}>Eliminar</RemoveButton>
+              <RemoveButton onClick={() => handleRemove(city)}>Eliminar</RemoveButton>
             </ButtonContainer>
           </ListItem>
         ))}
@@ -69,4 +80,3 @@ const FavoritesList = ({ cities, onRemove, onAddToFavorites, onViewFavorites, sh
 };
 
 export default FavoritesList;
-
